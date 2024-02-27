@@ -31,7 +31,7 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
             place.category = hostelCategory.title
         }
         val imageUrls = uploadFiles(images)
-        place.imageUrls = imageUrls
+        place.imageUrls.addAll(imageUrls)
 
         return placeRepository.save(place)
     }

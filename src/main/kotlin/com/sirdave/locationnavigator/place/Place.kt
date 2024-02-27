@@ -15,7 +15,6 @@ class Place (
     var placeType: PlaceType,
 
     var createdAt: LocalDateTime = LocalDateTime.now(),
-    var metadata: MutableMap<String, String> = hashMapOf()
 ){
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "place_sequence")
@@ -23,7 +22,8 @@ class Place (
     @Column(nullable = false, updatable = false)
     val id: Long? = null
 
-    var imageUrls: List<String> = arrayListOf()
+    @ElementCollection(targetClass = String::class)
+    var imageUrls = mutableListOf<String>()
 
     var category: String? = null
 
