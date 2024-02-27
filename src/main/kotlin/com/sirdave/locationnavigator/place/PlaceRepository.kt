@@ -13,7 +13,7 @@ interface PlaceRepository: JpaRepository<Place, Long>{
     fun searchPlaces(@Param("name") name: String): List<Place>
 
     @Query("SELECT p FROM Place p WHERE p.placeType = ?1")
-    fun getPlacesByPlaceType(type: String): List<Place>
+    fun getPlacesByPlaceType(type: PlaceType): List<Place>
 
 
 }

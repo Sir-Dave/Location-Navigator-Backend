@@ -41,7 +41,8 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
     }
 
     override fun getPlacesByPlaceType(type: String): List<Place> {
-        return placeRepository.getPlacesByPlaceType(type)
+        val placeType = getEnumName<PlaceType>(type)
+        return placeRepository.getPlacesByPlaceType(placeType)
     }
 
     override fun findPlaceById(id: Long): Place {
