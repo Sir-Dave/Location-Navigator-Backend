@@ -1,5 +1,6 @@
 package com.sirdave.locationnavigator.place
 
+import com.sirdave.locationnavigator.exception.EntityNotFoundException
 import com.sirdave.locationnavigator.helper.getEnumName
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -46,7 +47,7 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
     }
 
     override fun findPlaceById(id: Long): Place {
-        return placeRepository.findById(id).orElseThrow { RuntimeException("Place with id $id does not exist") }
+        return placeRepository.findById(id).orElseThrow { EntityNotFoundException("Place with id $id does not exist") }
     }
 
     override fun updatePlace(
