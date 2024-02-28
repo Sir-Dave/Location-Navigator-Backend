@@ -50,6 +50,12 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
         return placeRepository.getPlacesByPlaceType(placeType, pageable).map { it.toPlaceDto() }
     }
 
+    override fun findAll(pageNo: Int, pageSize: Int): List<PlaceDto> {
+        val pageable = PageRequest.of(pageNo, pageSize)
+        val page = placeRepository.findAll(pageable)
+        return if (page.hasContent()) page.content.map { it.toPlaceDto() } else emptyList()
+    }
+
     override fun findPlaceById(id: Long): Place {
         return placeRepository.findById(id).orElseThrow { EntityNotFoundException("Place with id $id does not exist") }
     }

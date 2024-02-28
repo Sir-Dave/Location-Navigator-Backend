@@ -60,10 +60,13 @@ class PlaceController(private val service: PlaceService) {
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") pageSize: Int,
     ): ResponseEntity<List<PlaceDto>> {
-        val places = if (type.isNullOrBlank()) name?.let {
-            service.searchPlaces(name = it, pageNo = page, pageSize = pageSize)
-        }
-        else service.getPlacesByPlaceType(type = type, pageNo = page, pageSize = pageSize)
+        val places = if (!name.isNullOrBlank())
+            service.searchPlaces(name = name, pageNo = page, pageSize = pageSize)
+
+        else if (!type.isNullOrBlank())
+            service.getPlacesByPlaceType(type = type, pageNo = page, pageSize = pageSize)
+
+        else service.findAll(pageNo = page, pageSize = pageSize)
         return ResponseEntity(places, HttpStatus.OK)
     }
 }

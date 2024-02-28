@@ -16,6 +16,8 @@ interface PlaceService {
 
     fun getPlacesByPlaceType(type: String, pageNo: Int, pageSize: Int): List<PlaceDto>
 
+    fun findAll(pageNo: Int, pageSize: Int): List<PlaceDto>
+
     fun findPlaceById(id: Long): Place
 
     fun updatePlace(
