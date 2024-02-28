@@ -57,6 +57,11 @@ class ExceptionHandling: ErrorController {
         return createHttpResponse(HttpStatus.BAD_REQUEST, exception.message!!)
     }
 
+    @ExceptionHandler(PasswordsDoNotMatchException::class)
+    fun passwordsDoNotMatchException(exception: PasswordsDoNotMatchException): ResponseEntity<ApiResponse>{
+        return createHttpResponse(HttpStatus.BAD_REQUEST, exception.message!!)
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun httpMessageNotReadableException(exception: HttpMessageNotReadableException): ResponseEntity<ApiResponse>{
         LOGGER.error(exception.message)
