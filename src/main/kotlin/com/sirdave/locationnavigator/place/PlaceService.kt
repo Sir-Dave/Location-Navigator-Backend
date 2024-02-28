@@ -10,11 +10,11 @@ interface PlaceService {
                        latitude: Double,
                        images: List<MultipartFile>,
                        placeType: String,
-                       category: String?): Place
+                       category: String?): PlaceDto
 
-    fun searchPlaces(name: String): List<Place>
+    fun searchPlaces(name: String): List<PlaceDto>
 
-    fun getPlacesByPlaceType(type: String): List<Place>
+    fun getPlacesByPlaceType(type: String): List<PlaceDto>
 
     fun findPlaceById(id: Long): Place
 
@@ -26,5 +26,5 @@ interface PlaceService {
         latitude: Double?,
         type: String?,
         category: String?
-    ): Place
+    ): PlaceDto
 }

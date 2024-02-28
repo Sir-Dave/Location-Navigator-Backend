@@ -18,7 +18,7 @@ class PlaceController(private val service: PlaceService) {
         @RequestPart images: List<MultipartFile>,
         @RequestParam placeType: String,
         @RequestParam(required = false) category: String?
-    ): ResponseEntity<Place> {
+    ): ResponseEntity<PlaceDto> {
         val place = service.createNewPlace(
             name = name,
             alias = alias,
@@ -40,7 +40,7 @@ class PlaceController(private val service: PlaceService) {
         @RequestParam(required = false) latitude: Double?,
         @RequestParam(required = false) placeType: String?,
         @RequestParam(required = false) category: String?
-    ): ResponseEntity<Place> {
+    ): ResponseEntity<PlaceDto> {
         val place = service.updatePlace(
             id = id,
             name = name,
@@ -57,10 +57,7 @@ class PlaceController(private val service: PlaceService) {
     fun searchPlaces(
         @RequestParam(required = false) name: String?,
         @RequestParam(required = false) type: String?,
-    ): ResponseEntity<List<Place>> {
-        println("name is $name")
-        println("type is $type")
-
+    ): ResponseEntity<List<PlaceDto>> {
         val places = if (type.isNullOrBlank()) name?.let { service.searchPlaces(name = it) }
         else service.getPlacesByPlaceType(type)
         return ResponseEntity(places, HttpStatus.OK)

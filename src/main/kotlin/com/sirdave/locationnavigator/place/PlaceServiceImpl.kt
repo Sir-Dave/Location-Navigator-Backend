@@ -2,6 +2,7 @@ package com.sirdave.locationnavigator.place
 
 import com.sirdave.locationnavigator.exception.EntityNotFoundException
 import com.sirdave.locationnavigator.helper.getEnumName
+import com.sirdave.locationnavigator.mapper.toPlaceDto
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
@@ -17,7 +18,7 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
         images: List<MultipartFile>,
         placeType: String,
         category: String?
-    ): Place {
+    ): PlaceDto {
         val type = getEnumName<PlaceType>(placeType)
 
         val place = Place(
@@ -34,16 +35,16 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
         val imageUrls = uploadFiles(images)
         place.imageUrls.addAll(imageUrls)
 
-        return placeRepository.save(place)
+        return placeRepository.save(place).toPlaceDto()
     }
 
-    override fun searchPlaces(name: String): List<Place> {
-        return placeRepository.searchPlaces(name)
+    override fun searchPlaces(name: String): List<PlaceDto> {
+        return placeRepository.searchPlaces(name).map { it.toPlaceDto() }
     }
 
-    override fun getPlacesByPlaceType(type: String): List<Place> {
+    override fun getPlacesByPlaceType(type: String): List<PlaceDto> {
         val placeType = getEnumName<PlaceType>(type)
-        return placeRepository.getPlacesByPlaceType(placeType)
+        return placeRepository.getPlacesByPlaceType(placeType).map { it.toPlaceDto() }
     }
 
     override fun findPlaceById(id: Long): Place {
@@ -58,7 +59,7 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
         latitude: Double?,
         type: String?,
         category: String?
-    ): Place {
+    ): PlaceDto {
         val place = findPlaceById(id)
 
         if (!name.isNullOrBlank())
@@ -87,7 +88,7 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
 
         place.updatedAt = LocalDateTime.now()
 
-        return placeRepository.save(place)
+        return placeRepository.save(place).toPlaceDto()
     }
 
     private fun uploadFiles(images: List<MultipartFile>): List<String>{
