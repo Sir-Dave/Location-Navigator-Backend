@@ -1,5 +1,6 @@
 package com.sirdave.locationnavigator.place
 
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -10,10 +11,10 @@ interface PlaceRepository: JpaRepository<Place, Long>{
 
     @Query("SELECT p FROM Place p WHERE LOWER(p.name) LIKE LOWER(concat('%', :name,'%')) OR " +
             "LOWER(p.alias) LIKE LOWER(concat('%', :name,'%'))")
-    fun searchPlaces(@Param("name") name: String): List<Place>
+    fun searchPlaces(@Param("name") name: String, pageable: Pageable): List<Place>
 
     @Query("SELECT p FROM Place p WHERE p.placeType = ?1")
-    fun getPlacesByPlaceType(type: PlaceType): List<Place>
+    fun getPlacesByPlaceType(type: PlaceType, pageable: Pageable): List<Place>
 
 
 }

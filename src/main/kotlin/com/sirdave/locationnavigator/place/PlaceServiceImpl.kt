@@ -3,6 +3,7 @@ package com.sirdave.locationnavigator.place
 import com.sirdave.locationnavigator.exception.EntityNotFoundException
 import com.sirdave.locationnavigator.helper.getEnumName
 import com.sirdave.locationnavigator.mapper.toPlaceDto
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
@@ -38,13 +39,15 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
         return placeRepository.save(place).toPlaceDto()
     }
 
-    override fun searchPlaces(name: String): List<PlaceDto> {
-        return placeRepository.searchPlaces(name).map { it.toPlaceDto() }
+    override fun searchPlaces(name: String, pageNo: Int, pageSize: Int): List<PlaceDto> {
+        val pageable = PageRequest.of(pageNo, pageSize)
+        return placeRepository.searchPlaces(name, pageable).map { it.toPlaceDto() }
     }
 
-    override fun getPlacesByPlaceType(type: String): List<PlaceDto> {
+    override fun getPlacesByPlaceType(type: String, pageNo: Int, pageSize: Int): List<PlaceDto> {
         val placeType = getEnumName<PlaceType>(type)
-        return placeRepository.getPlacesByPlaceType(placeType).map { it.toPlaceDto() }
+        val pageable = PageRequest.of(pageNo, pageSize)
+        return placeRepository.getPlacesByPlaceType(placeType, pageable).map { it.toPlaceDto() }
     }
 
     override fun findPlaceById(id: Long): Place {

@@ -12,9 +12,9 @@ interface PlaceService {
                        placeType: String,
                        category: String?): PlaceDto
 
-    fun searchPlaces(name: String): List<PlaceDto>
+    fun searchPlaces(name: String, pageNo: Int, pageSize: Int): List<PlaceDto>
 
-    fun getPlacesByPlaceType(type: String): List<PlaceDto>
+    fun getPlacesByPlaceType(type: String, pageNo: Int, pageSize: Int): List<PlaceDto>
 
     fun findPlaceById(id: Long): Place
 
