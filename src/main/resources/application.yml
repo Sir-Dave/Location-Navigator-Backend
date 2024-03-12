@@ -1,9 +1,10 @@
 spring:
   profiles:
     active:
-      - dev
+      - prod
 
-
+jwt:
+  secret: ${JWT_SECRET}
 ---
 spring:
   config:
@@ -30,9 +31,37 @@ spring:
       max-file-size: 2MB
       max-request-size: 2MB
 
-jwt:
-  secret: ${JWT_SECRET}
+server:
+  error:
+    include-message: always
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    maxActive: 10
+    maxIdle: 5
+    minIdle: 2
+    initialSize: 5
+    removeAbandoned: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format-sql: true
+
 
 server:
   error:
     include-message: always
+
+  port: ${PORT:5000}
