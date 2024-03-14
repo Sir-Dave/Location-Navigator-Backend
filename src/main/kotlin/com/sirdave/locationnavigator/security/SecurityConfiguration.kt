@@ -1,5 +1,6 @@
 package com.sirdave.locationnavigator.security
 
+import com.sirdave.locationnavigator.constants.PLACES_ENDPOINT
 import com.sirdave.locationnavigator.constants.SecurityConstants
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -42,7 +43,7 @@ class SecurityConfiguration(
                 .and()
 
         https.authorizeRequests().antMatchers(*SecurityConstants.PUBLIC_URLS).permitAll()
-            .antMatchers(HttpMethod.GET, "/**").permitAll() // Permit only GET requests
+            .antMatchers(HttpMethod.GET, "$PLACES_ENDPOINT/**").permitAll() // Permit only GET requests
             .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             .anyRequest().authenticated().and()
             .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)

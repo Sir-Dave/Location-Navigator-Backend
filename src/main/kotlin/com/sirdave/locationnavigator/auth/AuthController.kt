@@ -1,5 +1,6 @@
 package com.sirdave.locationnavigator.auth
 
+import com.sirdave.locationnavigator.constants.AUTH_ENDPOINT
 import com.sirdave.locationnavigator.helper.ApiResponse
 import com.sirdave.locationnavigator.mapper.toUserDto
 import com.sirdave.locationnavigator.security.JwtTokenProvider
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletRequest
 
 @RestController
-@RequestMapping(path = ["/api/v1/auth"])
+@RequestMapping(path = [AUTH_ENDPOINT])
 class AuthController(
     private val authService: AuthService,
     private val userService: UserService,
