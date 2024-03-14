@@ -69,4 +69,11 @@ class PlaceController(private val service: PlaceService) {
         else service.findAll(pageNo = page, pageSize = pageSize)
         return ResponseEntity(places, HttpStatus.OK)
     }
+
+    @GetMapping("/{id}")
+    fun updatePlace(
+        @PathVariable("id") id: Long): ResponseEntity<PlaceDto> {
+        val place = service.getOnePlace(id = id)
+        return ResponseEntity(place, HttpStatus.OK)
+    }
 }

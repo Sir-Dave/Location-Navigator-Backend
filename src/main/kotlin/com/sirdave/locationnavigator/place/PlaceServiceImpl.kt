@@ -56,7 +56,11 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
         return if (page.hasContent()) page.content.map { it.toPlaceDto() } else emptyList()
     }
 
-    override fun findPlaceById(id: Long): Place {
+    override fun getOnePlace(id: Long): PlaceDto {
+        return findPlaceById(id).toPlaceDto()
+    }
+
+    private fun findPlaceById(id: Long): Place {
         return placeRepository.findById(id).orElseThrow { EntityNotFoundException("Place with id $id does not exist") }
     }
 
