@@ -40,7 +40,8 @@ class PlaceController(private val service: PlaceService) {
         @RequestParam(required = false) longitude: Double?,
         @RequestParam(required = false) latitude: Double?,
         @RequestParam(required = false) placeType: String?,
-        @RequestParam(required = false) category: String?
+        @RequestParam(required = false) category: String?,
+        @RequestPart(required = false) images: List<MultipartFile>,
     ): ResponseEntity<PlaceDto> {
         val place = service.updatePlace(
             id = id,
@@ -49,7 +50,8 @@ class PlaceController(private val service: PlaceService) {
             longitude = longitude,
             latitude = latitude,
             type = placeType,
-            category = category
+            category = category,
+            images = images
         )
         return ResponseEntity(place, HttpStatus.OK)
     }
@@ -72,7 +74,7 @@ class PlaceController(private val service: PlaceService) {
     }
 
     @GetMapping("/{id}")
-    fun updatePlace(
+    fun getPlace(
         @PathVariable("id") id: Long): ResponseEntity<PlaceDto> {
         val place = service.getOnePlace(id = id)
         return ResponseEntity(place, HttpStatus.OK)

@@ -76,7 +76,8 @@ class PlaceServiceImpl(
         longitude: Double?,
         latitude: Double?,
         type: String?,
-        category: String?
+        category: String?,
+        images: List<MultipartFile>,
     ): PlaceDto {
         val place = findPlaceById(id)
 
@@ -102,6 +103,11 @@ class PlaceServiceImpl(
             val hostelCategory = getEnumName<HostelCategory>(category)
             if (placeType == PlaceType.HALL_OF_RESIDENCE)
                 place.category = hostelCategory.title
+        }
+
+        if (images.isNotEmpty()){
+            val imageUrls = uploadFiles(images, place.name)
+            place.imageUrls.addAll(imageUrls)
         }
 
         place.updatedAt = LocalDateTime.now()
