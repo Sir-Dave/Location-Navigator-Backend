@@ -3,13 +3,18 @@ package com.sirdave.locationnavigator.place
 import com.sirdave.locationnavigator.exception.EntityNotFoundException
 import com.sirdave.locationnavigator.helper.getEnumName
 import com.sirdave.locationnavigator.mapper.toPlaceDto
+import com.sirdave.locationnavigator.service.CloudinaryService
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 @Service
-class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceService{
+class PlaceServiceImpl(
+    private val placeRepository: PlaceRepository,
+    private val cloudinaryService: CloudinaryService
+): PlaceService{
 
     override fun createNewPlace(
         name: String,
@@ -33,7 +38,7 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
             val hostelCategory = getEnumName<HostelCategory>(category)
             place.category = hostelCategory.title
         }
-        val imageUrls = uploadFiles(images)
+        val imageUrls = uploadFiles(images, name)
         place.imageUrls.addAll(imageUrls)
 
         return placeRepository.save(place).toPlaceDto()
@@ -104,9 +109,8 @@ class PlaceServiceImpl(private val placeRepository: PlaceRepository): PlaceServi
         return placeRepository.save(place).toPlaceDto()
     }
 
-    private fun uploadFiles(images: List<MultipartFile>): List<String>{
-        //TODO: Implement this
-        return emptyList()
+    private fun uploadFiles(images: List<MultipartFile>, folder: String): List<String>{
+        return cloudinaryService.uploadMultipleFiles(images, folder)
     }
 
 }
