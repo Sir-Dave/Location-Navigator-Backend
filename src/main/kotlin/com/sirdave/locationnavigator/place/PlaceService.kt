@@ -28,6 +28,6 @@ interface PlaceService {
         latitude: Double?,
         type: String?,
         category: String?,
-        images: List<MultipartFile>
+        images: List<MultipartFile>?
     ): PlaceDto
 }

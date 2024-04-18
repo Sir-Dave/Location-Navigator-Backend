@@ -77,7 +77,7 @@ class PlaceServiceImpl(
         latitude: Double?,
         type: String?,
         category: String?,
-        images: List<MultipartFile>,
+        images: List<MultipartFile>?,
     ): PlaceDto {
         val place = findPlaceById(id)
 
@@ -105,7 +105,7 @@ class PlaceServiceImpl(
                 place.category = hostelCategory.title
         }
 
-        if (images.isNotEmpty()){
+        if (!images.isNullOrEmpty()){
             val imageUrls = uploadFiles(images, place.name)
             place.imageUrls.addAll(imageUrls)
         }

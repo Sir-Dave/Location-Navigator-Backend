@@ -41,7 +41,7 @@ class PlaceController(private val service: PlaceService) {
         @RequestParam(required = false) latitude: Double?,
         @RequestParam(required = false) placeType: String?,
         @RequestParam(required = false) category: String?,
-        @RequestPart(required = false) images: List<MultipartFile>,
+        @RequestPart(required = false) images: List<MultipartFile>?,
     ): ResponseEntity<PlaceDto> {
         val place = service.updatePlace(
             id = id,
