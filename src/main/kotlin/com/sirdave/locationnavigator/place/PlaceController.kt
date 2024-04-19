@@ -16,7 +16,7 @@ class PlaceController(private val service: PlaceService) {
         @RequestParam alias: String,
         @RequestParam longitude: Double,
         @RequestParam latitude: Double,
-        @RequestPart images: List<MultipartFile>,
+        @RequestPart(required = false) images: List<MultipartFile>?,
         @RequestParam placeType: String,
         @RequestParam(required = false) category: String?
     ): ResponseEntity<PlaceDto> {

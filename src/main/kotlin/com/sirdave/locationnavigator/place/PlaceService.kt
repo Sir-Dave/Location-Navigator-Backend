@@ -8,7 +8,7 @@ interface PlaceService {
                        alias: String,
                        longitude: Double,
                        latitude: Double,
-                       images: List<MultipartFile>,
+                       images: List<MultipartFile>?,
                        placeType: String,
                        category: String?): PlaceDto
 

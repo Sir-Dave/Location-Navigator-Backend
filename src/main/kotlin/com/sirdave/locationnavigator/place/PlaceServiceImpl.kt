@@ -21,7 +21,7 @@ class PlaceServiceImpl(
         alias: String,
         longitude: Double,
         latitude: Double,
-        images: List<MultipartFile>,
+        images: List<MultipartFile>?,
         placeType: String,
         category: String?
     ): PlaceDto {
@@ -38,8 +38,10 @@ class PlaceServiceImpl(
             val hostelCategory = getEnumName<HostelCategory>(category)
             place.category = hostelCategory.title
         }
-        val imageUrls = uploadFiles(images, name)
-        place.imageUrls.addAll(imageUrls)
+        if (!images.isNullOrEmpty()){
+            val imageUrls = uploadFiles(images, name)
+            place.imageUrls.addAll(imageUrls)
+        }
 
         return placeRepository.save(place).toPlaceDto()
     }
