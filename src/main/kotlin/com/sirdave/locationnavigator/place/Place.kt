@@ -1,5 +1,6 @@
 package com.sirdave.locationnavigator.place
 
+import com.sirdave.locationnavigator.category.Category
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -28,4 +29,16 @@ class Place (
     var category: String? = null
 
     var updatedAt: LocalDateTime? = null
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    var placeCategory: Category? = null
+
+    fun addToCategory(category: Category){
+        category.addPlace(this)
+    }
+
+    fun removeFromCategory(category: Category){
+        category.removePlace(this)
+    }
 }
