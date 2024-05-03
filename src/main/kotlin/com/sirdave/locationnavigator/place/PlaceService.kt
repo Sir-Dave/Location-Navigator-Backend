@@ -9,12 +9,12 @@ interface PlaceService {
                        longitude: Double,
                        latitude: Double,
                        images: List<MultipartFile>?,
-                       placeType: String,
-                       category: String?): PlaceDto
+                       category: String
+    ): PlaceDto
 
     fun searchPlaces(name: String, pageNo: Int, pageSize: Int): List<PlaceDto>
 
-    fun getPlacesByPlaceType(type: String, pageNo: Int, pageSize: Int): List<PlaceDto>
+    fun getPlacesByCategory(category: String, pageNo: Int, pageSize: Int): List<PlaceDto>
 
     fun findAll(pageNo: Int, pageSize: Int): List<PlaceDto>
 
@@ -26,7 +26,6 @@ interface PlaceService {
         alias: String?,
         longitude: Double?,
         latitude: Double?,
-        type: String?,
         category: String?,
         images: List<MultipartFile>?
     ): PlaceDto

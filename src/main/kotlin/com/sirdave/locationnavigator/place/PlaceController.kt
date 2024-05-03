@@ -17,8 +17,7 @@ class PlaceController(private val service: PlaceService) {
         @RequestParam longitude: Double,
         @RequestParam latitude: Double,
         @RequestPart(required = false) images: List<MultipartFile>?,
-        @RequestParam placeType: String,
-        @RequestParam(required = false) category: String?
+        @RequestParam category: String
     ): ResponseEntity<PlaceDto> {
         val place = service.createNewPlace(
             name = name,
@@ -26,7 +25,6 @@ class PlaceController(private val service: PlaceService) {
             longitude = longitude,
             latitude = latitude,
             images = images,
-            placeType = placeType,
             category = category
         )
         return ResponseEntity(place, HttpStatus.CREATED)
@@ -49,7 +47,6 @@ class PlaceController(private val service: PlaceService) {
             alias = alias,
             longitude = longitude,
             latitude = latitude,
-            type = placeType,
             category = category,
             images = images
         )
@@ -59,15 +56,15 @@ class PlaceController(private val service: PlaceService) {
     @GetMapping
     fun searchPlaces(
         @RequestParam(required = false) name: String?,
-        @RequestParam(required = false) type: String?,
+        @RequestParam(required = false) category: String?,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") pageSize: Int,
     ): ResponseEntity<List<PlaceDto>> {
         val places = if (!name.isNullOrBlank())
             service.searchPlaces(name = name, pageNo = page, pageSize = pageSize)
 
-        else if (!type.isNullOrBlank())
-            service.getPlacesByPlaceType(type = type, pageNo = page, pageSize = pageSize)
+        else if (!category.isNullOrBlank())
+            service.getPlacesByCategory(category = category, pageNo = page, pageSize = pageSize)
 
         else service.findAll(pageNo = page, pageSize = pageSize)
         return ResponseEntity(places, HttpStatus.OK)

@@ -13,8 +13,8 @@ interface PlaceRepository: JpaRepository<Place, Long>{
             "LOWER(p.alias) LIKE LOWER(concat('%', :name,'%'))")
     fun searchPlaces(@Param("name") name: String, pageable: Pageable): List<Place>
 
-    @Query("SELECT p FROM Place p WHERE p.placeType = ?1")
-    fun getPlacesByPlaceType(type: PlaceType, pageable: Pageable): List<Place>
+    @Query("SELECT p FROM Place p WHERE p.placeCategory.name = ?1")
+    fun getPlacesByCategory(category: String, pageable: Pageable): List<Place>
 
 
 }

@@ -1,10 +1,9 @@
 package com.sirdave.locationnavigator.place
 
+import com.sirdave.locationnavigator.category.CategoryService
 import com.sirdave.locationnavigator.exception.EntityNotFoundException
-import com.sirdave.locationnavigator.helper.getEnumName
 import com.sirdave.locationnavigator.mapper.toPlaceDto
 import com.sirdave.locationnavigator.service.CloudinaryService
-import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -13,7 +12,8 @@ import java.time.LocalDateTime
 @Service
 class PlaceServiceImpl(
     private val placeRepository: PlaceRepository,
-    private val cloudinaryService: CloudinaryService
+    private val cloudinaryService: CloudinaryService,
+    private val categoryService: CategoryService
 ): PlaceService{
 
     override fun createNewPlace(
@@ -22,26 +22,22 @@ class PlaceServiceImpl(
         longitude: Double,
         latitude: Double,
         images: List<MultipartFile>?,
-        placeType: String,
-        category: String?
+        category: String
     ): PlaceDto {
-        val type = getEnumName<PlaceType>(placeType)
+        val placeCategory = categoryService.findCategoryByName(category)
 
         val place = Place(
             name = name,
             alias = alias,
             longitude = longitude,
-            latitude = latitude,
-            placeType = type
+            latitude = latitude
         )
-        if (!category.isNullOrBlank() && type == PlaceType.HALL_OF_RESIDENCE){
-            val hostelCategory = getEnumName<HostelCategory>(category)
-            place.category = hostelCategory.title
-        }
+
         if (!images.isNullOrEmpty()){
             val imageUrls = uploadFiles(images, name)
             place.imageUrls.addAll(imageUrls)
         }
+        place.addToCategory(placeCategory)
 
         return placeRepository.save(place).toPlaceDto()
     }
@@ -51,10 +47,9 @@ class PlaceServiceImpl(
         return placeRepository.searchPlaces(name, pageable).map { it.toPlaceDto() }
     }
 
-    override fun getPlacesByPlaceType(type: String, pageNo: Int, pageSize: Int): List<PlaceDto> {
-        val placeType = getEnumName<PlaceType>(type)
+    override fun getPlacesByCategory(category: String, pageNo: Int, pageSize: Int): List<PlaceDto> {
         val pageable = PageRequest.of(pageNo, pageSize)
-        return placeRepository.getPlacesByPlaceType(placeType, pageable).map { it.toPlaceDto() }
+        return placeRepository.getPlacesByCategory(category, pageable).map { it.toPlaceDto() }
     }
 
     override fun findAll(pageNo: Int, pageSize: Int): List<PlaceDto> {
@@ -77,9 +72,8 @@ class PlaceServiceImpl(
         alias: String?,
         longitude: Double?,
         latitude: Double?,
-        type: String?,
         category: String?,
-        images: List<MultipartFile>?,
+        images: List<MultipartFile>?
     ): PlaceDto {
         val place = findPlaceById(id)
 
@@ -95,16 +89,9 @@ class PlaceServiceImpl(
         if (latitude != null)
             place.latitude = latitude
 
-        if (type != null) {
-            val placeType = getEnumName<PlaceType>(type)
-            place.placeType = placeType
-        }
-
-        if (category != null && type != null) {
-            val placeType = getEnumName<PlaceType>(type)
-            val hostelCategory = getEnumName<HostelCategory>(category)
-            if (placeType == PlaceType.HALL_OF_RESIDENCE)
-                place.category = hostelCategory.title
+        if (category != null) {
+            val placeCategory = categoryService.findCategoryByName(category)
+            place.addToCategory(placeCategory)
         }
 
         if (!images.isNullOrEmpty()){
