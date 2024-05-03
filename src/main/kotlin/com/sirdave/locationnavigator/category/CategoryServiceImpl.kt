@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service
 class CategoryServiceImpl(private val repository: CategoryRepository): CategoryService{
     override fun createNewCategory(name: String): CategoryDto {
         val optionalCategory = repository.findCategoryByName(name)
+
         check(optionalCategory.isEmpty){
-            EntityExistsException("Category with name $name already exists")
+            throw EntityExistsException("Category with name $name already exists")
         }
         val category = Category(name = name)
         return repository.save(category).toCategoryDto()
@@ -33,7 +34,7 @@ class CategoryServiceImpl(private val repository: CategoryRepository): CategoryS
 
         val existingCategory = repository.findCategoryByName(name)
         check(existingCategory.isEmpty){
-            EntityExistsException("Category with name $name already exists")
+            throw EntityExistsException("Category with name $name already exists")
         }
         category.name = name
         return repository.save(category).toCategoryDto()

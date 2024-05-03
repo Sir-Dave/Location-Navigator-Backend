@@ -30,16 +30,11 @@ class CategoryController(private val service: CategoryService) {
     }
 
     @GetMapping
-    fun searchCategoryByName(
-        @RequestParam name: String,
-    ): ResponseEntity<CategoryDto> {
-        val category = service.findCategoryByName(name)
-        return ResponseEntity(category, HttpStatus.OK)
-    }
-
-    @GetMapping
-    fun getAllCategories(): ResponseEntity<List<CategoryDto>> {
-        val categories = service.getAllCategories()
+    fun getAllCategories(
+        @RequestParam(required = false) name: String?,
+    ): ResponseEntity<List<CategoryDto>> {
+        val categories = if (name.isNullOrBlank()) service.getAllCategories()
+        else listOf(service.findCategoryByName(name))
         return ResponseEntity(categories, HttpStatus.OK)
     }
 }
