@@ -11,10 +11,6 @@ class Place (
     var alias: String,
     var longitude: Double,
     var latitude: Double,
-
-    @Enumerated(EnumType.STRING)
-    var placeType: PlaceType,
-
     var createdAt: LocalDateTime = LocalDateTime.now(),
 ){
     @Id
@@ -25,8 +21,6 @@ class Place (
 
     @ElementCollection(targetClass = String::class)
     var imageUrls = mutableListOf<String>()
-
-    var category: String? = null
 
     var updatedAt: LocalDateTime? = null
 

@@ -12,8 +12,7 @@ fun Place.toPlaceDto(): PlaceDto {
         alias = alias,
         longitude = longitude,
         latitude = latitude,
-        placeType = placeType.title,
-        category = category,
+        category = placeCategory?.name,
         imageUrls = imageUrls,
         createdAt = createdAt.toFormattedDate(),
         updatedAt = updatedAt?.toFormattedDate()
