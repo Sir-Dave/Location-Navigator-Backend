@@ -1,6 +1,7 @@
 package com.sirdave.locationnavigator.category
 
 import com.sirdave.locationnavigator.constants.CATEGORIES_ENDPOINT
+import com.sirdave.locationnavigator.mapper.toCategoryDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -34,7 +35,7 @@ class CategoryController(private val service: CategoryService) {
         @RequestParam(required = false) name: String?,
     ): ResponseEntity<List<CategoryDto>> {
         val categories = if (name.isNullOrBlank()) service.getAllCategories()
-        else listOf(service.findCategoryByName(name))
+        else listOf(service.findCategoryByName(name).toCategoryDto())
         return ResponseEntity(categories, HttpStatus.OK)
     }
 }

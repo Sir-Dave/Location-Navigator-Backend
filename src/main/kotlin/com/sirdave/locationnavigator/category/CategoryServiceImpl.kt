@@ -17,10 +17,10 @@ class CategoryServiceImpl(private val repository: CategoryRepository): CategoryS
         return repository.save(category).toCategoryDto()
     }
 
-    override fun findCategoryByName(name: String): CategoryDto {
+    override fun findCategoryByName(name: String): Category {
         return repository.findCategoryByName(name).orElseThrow{
             EntityNotFoundException("No category with name $name was found")
-        }.toCategoryDto()
+        }
     }
 
     override fun getAllCategories(): List<CategoryDto> {
