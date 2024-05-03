@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "categories")
 class Category(
-    val name: String
+    var name: String
 ){
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")
